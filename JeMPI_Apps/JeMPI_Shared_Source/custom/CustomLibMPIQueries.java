@@ -15,7 +15,7 @@ class CustomLibMPIQueries {
    private CustomLibMPIQueries() {}
    static final String QUERY_DETERMINISTIC_GOLDEN_RECORD_CANDIDATES =
       """
-      query query_deterministic_golden_record_candidates($given_name: string, $family_name: string, $phone_number: string, $national_id: string) {
+      query query_deterministic_golden_record_candidates($given_name: string, $family_name: string, $phone_number: string, $national_id: string, $nat_fingerprint_code: string) {
          var(func: eq(GoldenRecord.given_name, $given_name)) {
             A as uid
          }
@@ -28,12 +28,17 @@ class CustomLibMPIQueries {
          var(func: eq(GoldenRecord.national_id, $national_id)) {
             D as uid
          }
-         all(func: uid(A,B,C,D)) @filter (uid(D) OR (uid(A) AND uid(B) AND uid(C))) {
+         var(func: eq(GoldenRecord.nat_fingerprint_code, $nat_fingerprint_code)) {
+            E as uid
+         }
+         all(func: uid(C,E,B,D,A)) @filter (uid(E) OR (uid(D) AND uid(A) AND uid(B) AND uid(C))) {
             uid
             GoldenRecord.source_id {
                uid
             }
             GoldenRecord.aux_id
+            GoldenRecord.nat_fingerprint_code
+            GoldenRecord.emr_fingerprint_code
             GoldenRecord.given_name
             GoldenRecord.family_name
             GoldenRecord.gender
@@ -63,6 +68,8 @@ class CustomLibMPIQueries {
                uid
             }
             GoldenRecord.aux_id
+            GoldenRecord.nat_fingerprint_code
+            GoldenRecord.emr_fingerprint_code
             GoldenRecord.given_name
             GoldenRecord.family_name
             GoldenRecord.gender
@@ -77,32 +84,14 @@ class CustomLibMPIQueries {
    static final String QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_PHONE_NUMBER =
       """
       query query_match_golden_record_candidates_by_phone_number($phone_number: string) {
-         all(func: match(GoldenRecord.phone_number, $phone_number, 3)) {
+         all(func: eq(GoldenRecord.phone_number, $phone_number)) {
             uid
             GoldenRecord.source_id {
                uid
             }
             GoldenRecord.aux_id
-            GoldenRecord.given_name
-            GoldenRecord.family_name
-            GoldenRecord.gender
-            GoldenRecord.dob
-            GoldenRecord.city
-            GoldenRecord.phone_number
-            GoldenRecord.national_id
-         }
-      }
-      """;
-      
-   static final String QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_NATIONAL_ID =
-      """
-      query query_match_golden_record_candidates_by_national_id($national_id: string) {
-         all(func: match(GoldenRecord.national_id, $national_id, 3)) {
-            uid
-            GoldenRecord.source_id {
-               uid
-            }
-            GoldenRecord.aux_id
+            GoldenRecord.nat_fingerprint_code
+            GoldenRecord.emr_fingerprint_code
             GoldenRecord.given_name
             GoldenRecord.family_name
             GoldenRecord.gender
@@ -120,11 +109,13 @@ class CustomLibMPIQueries {
       final var familyName = customEntity.familyName();
       final var phoneNumber = customEntity.phoneNumber();
       final var nationalId = customEntity.nationalId();
+      final var natFingerprintCode = customEntity.natFingerprintCode();
       final var givenNameIsBlank = StringUtils.isBlank(givenName);
       final var familyNameIsBlank = StringUtils.isBlank(familyName);
       final var phoneNumberIsBlank = StringUtils.isBlank(phoneNumber);
       final var nationalIdIsBlank = StringUtils.isBlank(nationalId);
-      if ((nationalIdIsBlank && (givenNameIsBlank || familyNameIsBlank || phoneNumberIsBlank))) {
+      final var natFingerprintCodeIsBlank = StringUtils.isBlank(natFingerprintCode);
+      if ((natFingerprintCodeIsBlank && (nationalIdIsBlank || givenNameIsBlank || familyNameIsBlank || phoneNumberIsBlank))) {
          return new LibMPIGoldenRecordList(List.of());
       }
       final var map = Map.of(
@@ -143,6 +134,10 @@ class CustomLibMPIQueries {
          "$national_id",
          StringUtils.isNotBlank(nationalId)
             ? nationalId
+            : Queries.EMPTY_FIELD_SENTINEL,
+         "$nat_fingerprint_code",
+         StringUtils.isNotBlank(natFingerprintCode)
+            ? natFingerprintCode
             : Queries.EMPTY_FIELD_SENTINEL);
       return runGoldenRecordQuery(QUERY_DETERMINISTIC_GOLDEN_RECORD_CANDIDATES, map);
    }
@@ -181,14 +176,6 @@ class CustomLibMPIQueries {
       return runGoldenRecordQuery(QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_PHONE_NUMBER, map);
    }
 
-   static LibMPIGoldenRecordList queryMatchGoldenRecordCandidatesByNationalId(final String val) {
-      if (StringUtils.isBlank(val)) {
-         return new LibMPIGoldenRecordList(List.of());
-      }
-      final Map<String, String> map = Map.of("$national_id", val);
-      return runGoldenRecordQuery(QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_NATIONAL_ID, map);
-   }
-
    private static void updateCandidates(final List<CustomLibMPIGoldenRecord> goldenRecords,
                                         final LibMPIGoldenRecordList block) {
       final var candidates = block.all();
@@ -220,7 +207,6 @@ class CustomLibMPIQueries {
       var result = new LinkedList<CustomLibMPIGoldenRecord>();
       updateCandidates(result, queryMatchGoldenRecordCandidatesByDistance(dgraphEntity));
       updateCandidates(result, queryMatchGoldenRecordCandidatesByPhoneNumber(dgraphEntity.phoneNumber()));
-      updateCandidates(result, queryMatchGoldenRecordCandidatesByNationalId(dgraphEntity.nationalId()));
       return result;
    }
 

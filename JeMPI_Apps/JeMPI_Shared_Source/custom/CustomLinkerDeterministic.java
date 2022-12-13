@@ -23,7 +23,9 @@ class CustomLinkerDeterministic {
       final var phoneNumber_r = customEntity.phoneNumber();
       final var nationalId_l = goldenRecord.nationalId();
       final var nationalId_r = customEntity.nationalId();
-      return (isMatch(nationalId_l, nationalId_r) || (isMatch(givenName_l, givenName_r) && isMatch(familyName_l, familyName_r) && isMatch(phoneNumber_l, phoneNumber_r)));
+      final var natFingerprintCode_l = goldenRecord.natFingerprintCode();
+      final var natFingerprintCode_r = customEntity.natFingerprintCode();
+      return (isMatch(natFingerprintCode_l, natFingerprintCode_r) || (isMatch(nationalId_l, nationalId_r) && isMatch(givenName_l, givenName_r) && isMatch(familyName_l, familyName_r) && isMatch(phoneNumber_l, phoneNumber_r)));
    }
 
 }
