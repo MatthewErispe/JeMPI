@@ -17,10 +17,17 @@ import org.jembi.jempi.shared.models.CustomGoldenRecord;
 import org.jembi.jempi.shared.models.CustomMU;
 import org.jembi.jempi.shared.models.Notification;
 import org.jembi.jempi.postgres.PsqlQueries;
+import org.jembi.jempi.keycloak.accessTokenExchanger;
 import org.jembi.jempi.shared.models.LinkInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import kong.unirest.json.JSONObject;
+import java.net.HttpCookie;
+import java.net.CookieManager;
+import java.net.CookieStore;
+import java.net.URI;
+
 
 public class BackEnd extends AbstractBehavior<BackEnd.Event> {
 
@@ -67,6 +74,7 @@ public class BackEnd extends AbstractBehavior<BackEnd.Event> {
                 .onMessage(EventPatchGoldenRecordPredicateReq.class, this::eventPatchGoldenRecordPredicateHandler)
                 .onMessage(EventPatchLinkReq.class, this::eventPatchLinkHandler)
                 .onMessage(EventGetMatchesForReviewReq.class, this::eventGetMatchesForReviewHandler)
+                .onMessage(EventValidateReq.class, this::eventValidateHandler)
                 .onMessage(EventPatchUnLinkReq.class, this::eventPatchUnLinkHandler)
                 .onMessage(EventNotificationRequestReq.class, this::eventNotificationRequestHandler)
                 .build();
@@ -78,6 +86,8 @@ public class BackEnd extends AbstractBehavior<BackEnd.Event> {
       request.replyTo.tell(new EventGetMatchesForReviewListRsp(recs));
       return Behaviors.same();
    }
+
+
    private Behavior<Event> eventGetGoldenRecordCountHandler(final EventGetGoldenRecordCountReq request) {
       LOGGER.debug("getGoldenRecordCount");
       libMPI.startTransaction();
@@ -132,6 +142,7 @@ public class BackEnd extends AbstractBehavior<BackEnd.Event> {
         libMPI.closeTransaction();
         return Behaviors.same();
     }
+
 
     private Behavior<Event> eventGetGoldenRecordDocumentsHandler(final EventGetGoldenRecordDocumentsReq request) {
         LOGGER.debug("getGoldenRecordDocuments");
@@ -204,6 +215,31 @@ public class BackEnd extends AbstractBehavior<BackEnd.Event> {
         return Behaviors.same();
     }
 
+    private Behavior<Event> eventValidateHandler(final EventValidateReq request) {
+        CookieManager cookieManager = new CookieManager();
+        CookieStore cookieStore
+                = cookieManager.getCookieStore();
+        HttpCookie cookieA = new HttpCookie("First", "1");
+        HttpCookie cookieB = new HttpCookie("Second", "2");
+        HttpCookie actualCookie = null;
+        URI uri
+                = URI.create("https://www.jempi.org/");
+        cookieStore.add(uri, cookieA);
+        cookieStore.add(uri, cookieB);
+        List<HttpCookie> cookieList = cookieStore.getCookies();
+
+        for(HttpCookie cookie:cookieList)
+        {
+            if (cookie.getName() == "First"){
+                actualCookie = cookie;
+            }
+        }
+        List cookiesWithURI = cookieStore.get(uri);
+        accessTokenExchanger.exchangeToken(request.auth_code);
+        request.replyTo.tell(new EventValidateRsp(actualCookie));
+        return Behaviors.same();
+    }
+
     interface Event {
     }
 
@@ -261,9 +297,9 @@ public class BackEnd extends AbstractBehavior<BackEnd.Event> {
     }
 
     public record EventGetMatchesForReviewReq(ActorRef<EventGetMatchesForReviewListRsp> replyTo) implements Event {}
-
+    public record EventValidateReq(ActorRef<EventValidateRsp> replyTo, String auth_code) implements Event {}
     public record EventGetMatchesForReviewListRsp(List records) implements EventResponse {}
-    
+    public record EventValidateRsp(HttpCookie cookie) implements EventResponse {}
     public record EventGetDocumentRsp(CustomEntity document)
             implements EventResponse {
     }

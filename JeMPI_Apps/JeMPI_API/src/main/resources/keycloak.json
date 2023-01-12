@@ -1,0 +1,13 @@
+{
+  "realm": "dem",
+  "bearer-only": true,
+  "auth-server-url": "http://localhost:8089/auth/",
+  "ssl-required": "external",
+  "resource": "myclient",
+  "verify-token-audience": true,
+  "credentials": {
+    "secret": "5dc715bf-ca03-442d-9564-1638519da9e2"
+  },
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}

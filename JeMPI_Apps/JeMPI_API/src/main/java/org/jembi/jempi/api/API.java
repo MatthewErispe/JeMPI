@@ -8,6 +8,11 @@ import akka.actor.typed.javadsl.Behaviors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jembi.jempi.AppConfig;
+import akka.dispatch.Dispatcher;
+import akka.actor.typed.DispatcherSelector;
+import scala.concurrent.ExecutionContext;
+
+
 
 public final class API {
 
@@ -34,7 +39,9 @@ public final class API {
                     context.watch(backEnd);
                     final var notificationsSteam = new NotificationStreamProcessor();
                     notificationsSteam.open(context.getSystem(), backEnd);
-                    httpServer = new HttpServer();
+                    final ExecutionContext dispatcher = context.getSystem().dispatchers().lookup(DispatcherSelector.defaultDispatcher());
+//                    Dispatcher dispatcher = context.getSystem().dispatchers().lookup(DispatcherSelector.defaultDispatcher());
+                    httpServer = new HttpServer(dispatcher);
                     httpServer.open(context.getSystem(), backEnd);
                     return Behaviors.receive(Void.class)
                             .onSignal(Terminated.class,

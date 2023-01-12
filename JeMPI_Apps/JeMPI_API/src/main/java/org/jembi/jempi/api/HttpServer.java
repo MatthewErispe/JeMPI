@@ -27,14 +27,66 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import akka.http.javadsl.model.headers.Cookie;
+import akka.http.javadsl.model.headers.HttpCookie;
+import akka.http.javadsl.model.headers.SetCookie;
+import akka.http.javadsl.model.HttpHeader;
+import akka.http.javadsl.model.HttpRequest;
+import akka.http.javadsl.model.headers.*;
+import akka.http.javadsl.model.*;
+import static akka.http.javadsl.server.Directives.entity;
+import static akka.http.javadsl.server.Directives.complete;
 import static ch.megard.akka.http.cors.javadsl.CorsDirectives.cors;
+import com.softwaremill.session.javadsl.HttpSessionAwareDirectives;
+import com.softwaremill.session.BasicSessionEncoder;
+import com.softwaremill.session.RefreshTokenStorage;
+import com.softwaremill.session.Refreshable;
+import com.softwaremill.session.SessionConfig;
+import com.softwaremill.session.SessionEncoder;
+import com.softwaremill.session.SessionManager;
+import com.softwaremill.session.SetSessionTransport;
+import com.softwaremill.session.javadsl.HttpSessionAwareDirectives;
+import com.softwaremill.session.javadsl.InMemoryRefreshTokenStorage;
+import static com.softwaremill.session.javadsl.SessionTransports.CookieST;
+import org.jembi.jempi.api.session.UserSession;
+import akka.http.javadsl.unmarshalling.Unmarshaller;
+import com.softwaremill.session.CheckHeader;
+import akka.dispatch.MessageDispatcher;
 
-public class HttpServer extends AllDirectives {
+public class HttpServer extends HttpSessionAwareDirectives<UserSession> {
 
     private static final Logger LOGGER = LogManager.getLogger(HttpServer.class);
+    
+    private static final String SECRET = "c05ll3lesrinf39t7mc5h6un6r0c69lgfno69dsak3vabeqamouq4328cuaekros401ajdpkh60rrtpd8ro24rbuqmgtnd1ebag6ljnb65i8a55d482ok7o0nch0bfbe";
+    private static final SessionEncoder<UserSession> BASIC_ENCODER = new BasicSessionEncoder<>(UserSession.getSerializer());
 
+    // in-memory refresh token storage
+    private static final RefreshTokenStorage<UserSession> REFRESH_TOKEN_STORAGE = new InMemoryRefreshTokenStorage<UserSession>() {
+        @Override
+        public void log(String msg) {
+            LOGGER.info(msg);
+        }
+    };
+
+    private Refreshable<UserSession> refreshable;
+    private SetSessionTransport sessionTransport;
     private static final Function<Entry<String, String>, String> paramString = Entry::getValue;
     private CompletionStage<ServerBinding> binding = null;
+
+    public HttpServer(MessageDispatcher dispatcher) {
+        super(new SessionManager<>(
+                        SessionConfig.defaultConfig(SECRET),
+                        BASIC_ENCODER
+                )
+        );
+        // use Refreshable for sessions, which needs to be refreshed or OneOff otherwise
+        // using Refreshable, a refresh token is set in form of a cookie or a custom header
+        refreshable = new Refreshable<>(getSessionManager(), REFRESH_TOKEN_STORAGE, dispatcher);
+
+        // set the session transport - based on Cookies (or Headers)
+        sessionTransport = CookieST;
+    }
+
 
     void close(ActorSystem<Void> actorSystem) {
         binding.thenCompose(ServerBinding::unbind) // trigger unbinding from the port
@@ -110,6 +162,7 @@ public class HttpServer extends AllDirectives {
                         actorSystem.scheduler());
         return stage.thenApply(response -> response);
     }
+
 
     private CompletionStage<BackEnd.EventGetGoldenRecordRsp> getGoldenRecord(final ActorSystem<Void> actorSystem,
                                                                              final ActorRef<BackEnd.Event> backEnd,
@@ -392,7 +445,17 @@ public class HttpServer extends AllDirectives {
                         }));
     }
 
+    private Route routeValidate(final ActorSystem<Void> actorSystem, final ActorRef<BackEnd.Event> backEnd) {
+        return parameter("auth_code",
+                auth_code -> onComplete(validate(actorSystem, backEnd, auth_code),
+                        result -> result.isSuccess()
+                                ? complete(StatusCodes.OK, result.get(),
+                                Jackson.marshaller())
+                                : complete(StatusCodes.IM_A_TEAPOT)));
+    }
+
     private Route createRoute(final ActorSystem<Void> actorSystem, final ActorRef<BackEnd.Event> backEnd) {
+        CheckHeader<UserSession> checkHeader = new CheckHeader<>(getSessionManager());
         final var settings = CorsSettings.defaultSettings()
                 .withAllowedMethods(Arrays.asList(HttpMethods.GET, HttpMethods.POST, HttpMethods.PATCH))
                 .withAllowGenericHttpRequests(true);
@@ -402,12 +465,29 @@ public class HttpServer extends AllDirectives {
                         () -> concat(
                                 post(() -> concat(
                                         path("NotificationRequest",
-                                                () -> routeNotificationRequest(actorSystem, backEnd)))),
+                                                () -> routeNotificationRequest(actorSystem, backEnd)),
+                                        path("do_login", () ->
+                                                        entity(Unmarshaller.entityToString(), body -> {
+                                                                    LOGGER.info("Logging in {}", body);
+                                                                    return setSession(refreshable, sessionTransport, new UserSession(body), () ->
+                                                                            setNewCsrfToken(checkHeader, () ->
+                                                                                    extractRequestContext(ctx ->
+                                                                                            onSuccess(() -> ctx.completeWith(HttpResponse.create()), routeResult ->
+                                                                                                    complete("ok")
+                                                                                            )
+                                                                                    )
+                                                                            )
+                                                                    );
+                                                                }
+                                                        )
+                                        ))),
+
                                 patch(() -> concat(
                                         path("PatchGoldenRecordPredicate",
                                                 () -> routePatchGoldenRecordPredicate(actorSystem, backEnd)),
                                         path("Unlink",
                                                 () -> routeUnlink(actorSystem, backEnd)),
+
                                         path("Link",
                                                 () -> routeLink(actorSystem, backEnd)))),
                                 get(() -> concat(
@@ -429,8 +509,11 @@ public class HttpServer extends AllDirectives {
                                                 () -> routeGoldenRecord(actorSystem, backEnd)),
                                         path("MatchesForReview",
                                                 () -> routeMatchesForReviewList(actorSystem, backEnd)),
+                                        path("Validate",
+                                                () -> routeValidate(actorSystem, backEnd)),
                                         path("Document",
                                                 () -> routeDocument(actorSystem, backEnd)),
+
                                         path("Candidates",
                                                 () -> routeCandidates(actorSystem, backEnd)))))));
     }
@@ -444,6 +527,17 @@ public class HttpServer extends AllDirectives {
                                 notificationRequest.notificationId(), notificationRequest.state()),
                         java.time.Duration.ofSeconds(11),
                         actorSystem.scheduler());
+        return stage.thenApply(response -> response);
+    }
+
+    private CompletionStage<BackEnd.EventValidateRsp> validate(final ActorSystem<Void> actorSystem,
+                                                               final ActorRef<BackEnd.Event> backEnd,
+                                                               final String auth_code) {
+        LOGGER.debug("Validate");
+        final CompletionStage<BackEnd.EventValidateRsp> stage = AskPattern.ask(backEnd,
+                replyTo -> new BackEnd.EventValidateReq(replyTo, auth_code),
+                java.time.Duration.ofSeconds(5),
+                actorSystem.scheduler());
         return stage.thenApply(response -> response);
     }
 
