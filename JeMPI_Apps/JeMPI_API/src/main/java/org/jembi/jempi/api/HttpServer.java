@@ -37,12 +37,14 @@ import org.keycloak.representations.IDToken;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import org.jembi.jempi.api.models.User;
 
 import static ch.megard.akka.http.cors.javadsl.CorsDirectives.cors;
 import static com.softwaremill.session.javadsl.SessionTransports.CookieST;
@@ -466,17 +468,20 @@ public class HttpServer extends HttpSessionAwareDirectives<UserSession> {
                         PsqlQueries.registerUser(user);
                     }
 
-                    return setSession(refreshable, sessionTransport, new UserSession(user.username), () ->
+
+                    return setSession(refreshable, sessionTransport, new UserSession(user.getUsername()), () ->
                             setNewCsrfToken(checkHeader, () ->
                                     extractRequestContext(ctx ->
                                             onSuccess(() -> ctx.completeWith(HttpResponse.create()), routeResult ->
-                                                    complete(user) // JSON serialize
+                                                    complete("user") // JSON serialize
                                             )
                                     )
                             )
                     );
                 } catch (VerificationException e) {
                     LOGGER.error("failed verification of token: " + e.getMessage());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             } catch (ServerRequest.HttpFailure failure) {
                 LOGGER.error("failed to turn code into token");

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.lang.String;
 import java.util.UUID;
 import java.util.Date;
+import org.jembi.jempi.api.models.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -141,14 +142,25 @@ public class PsqlQueries {
         conn.commit();
     }
 
-    public static void getUserByEmail(String email) throws SQLException {
-
+    public static User getUserByEmail(String email) throws SQLException {
+        User user = new User();
         Connection conn = dbConnect.connect();
         Statement stmt = conn.createStatement();
 
         ResultSet rs = stmt.executeQuery( "select * from users where email = '" + email + "'");
         // Check if empty then return null
+        if (rs.next() == false)
+            return null;
+        else {
+            while (rs.next()) {
+                user.setEmail(rs.getString("email"));
+                user.setUsername(rs.getString("username"));
+                user.setGiven_name(rs.getString("given_name"));
+                user.setFamily_name(rs.getString("family_name"));
+            }
+        }
         // Otherwise we return the user object
+        return user;
     }
 
     public static void registerUser(User user) throws SQLException {
@@ -156,7 +168,8 @@ public class PsqlQueries {
         Connection conn = dbConnect.connect();
         Statement stmt = conn.createStatement();
 
-        ResultSet rs = stmt.executeQuery( "INSERT INTO users .... ");
-
+        ResultSet rs = stmt.executeQuery( "INSERT INTO users (given_name, family_name, email, username) VALUES" +
+                "'"+user.getGiven_name()+"', '"+user.getFamily_name()+"', '"+user.getEmail()+"', '"+user.getUsername()+"'");
+        conn.commit();
     }
 }
