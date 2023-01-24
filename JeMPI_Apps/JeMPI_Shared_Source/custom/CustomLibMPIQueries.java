@@ -168,11 +168,11 @@ class CustomLibMPIQueries {
       return runGoldenRecordQuery(QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_DISTANCE, map);
    }
 
-   static LibMPIGoldenRecordList queryMatchGoldenRecordCandidatesByPhoneNumber(final String val) {
-      if (StringUtils.isBlank(val)) {
+   static LibMPIGoldenRecordList queryMatchGoldenRecordCandidatesByPhoneNumber(final CustomEntity customEntity) {
+      if (StringUtils.isBlank(customEntity.phoneNumber())) {
          return new LibMPIGoldenRecordList(List.of());
       }
-      final Map<String, String> map = Map.of("$phone_number", val);
+      final Map<String, String> map = Map.of("$phone_number", customEntity.phoneNumber());
       return runGoldenRecordQuery(QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_PHONE_NUMBER, map);
    }
 
@@ -206,7 +206,7 @@ class CustomLibMPIQueries {
       }
       var result = new LinkedList<CustomLibMPIGoldenRecord>();
       updateCandidates(result, queryMatchGoldenRecordCandidatesByDistance(dgraphEntity));
-      updateCandidates(result, queryMatchGoldenRecordCandidatesByPhoneNumber(dgraphEntity.phoneNumber()));
+      updateCandidates(result, queryMatchGoldenRecordCandidatesByPhoneNumber(dgraphEntity));
       return result;
    }
 

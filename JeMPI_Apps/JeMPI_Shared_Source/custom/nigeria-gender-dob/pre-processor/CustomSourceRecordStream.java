@@ -115,6 +115,7 @@ public class CustomSourceRecordStream {
                            String phoneNumber,
                            String nationalId)
                      */
+/*
                      new CustomEntity(null,
                                       new SourceId(null, rec.EMR(), rec.pID()),
                                       rec.auxId(),
@@ -127,6 +128,16 @@ public class CustomSourceRecordStream {
                                       rec.city(),
                                       rec.phoneNumber(),
                                       rec.nationalID()));
+*/
+               new CustomEntity(null,
+                                new SourceId(null, rec.EMR(), rec.pID()),
+                                rec.auxId(),
+                                getNationalFingerprintID(rec.EMR(), rec.fID()),
+                                rec.fID(),
+                                rec.givenName(),
+                                rec.familyName(),
+                                rec.gender(),
+                                rec.dob()));
                return KeyValue.pair(k, entity);
             })
             .filter((key, value) -> !(value.entityType() == BatchEntity.EntityType.BATCH_RECORD && StringUtils.isBlank(
