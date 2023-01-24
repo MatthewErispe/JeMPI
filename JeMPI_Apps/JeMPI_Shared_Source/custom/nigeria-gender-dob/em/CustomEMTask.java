@@ -120,18 +120,16 @@ class CustomEMTask {
                         count[0] += 1;
                         final var v = r.value();
                         final var patient = new CustomPatient(v.entity());
-                        patients.forEach(p -> {
-                            var k = 0;
-                            k += (patient.col1Phonetic() == null || !patient.col1Phonetic().equals(p.col1Phonetic())) ? 0 : 1;
-                            k += (patient.col2Phonetic() == null || !patient.col2Phonetic().equals(p.col2Phonetic())) ? 0 : 1;
-                            if (k >= 1) {
-                                final String[] left = {patient.col1(), patient.col2(),
-                                                       patient.genderAtBirth(), patient.dateOfBirth()};
-                                final String[] right = {p.col1(), p.col2(), p.genderAtBirth(),
-                                                        p.dateOfBirth()};
-                                gamma.add(setRowLevels(rowNumber[0]++, jaroWinklerSimilarity, left, right));
-                            }
-                        });
+//                        patients.forEach(p -> {
+//                            var k = 0;
+//                            if (k >= 1) {
+//                                final String[] left = {patient.col1(), patient.col2(),
+//                                                       patient.genderAtBirth(), patient.dateOfBirth()};
+//                                final String[] right = {p.col1(), p.col2(), p.genderAtBirth(),
+//                                                        p.dateOfBirth()};
+//                                gamma.add(setRowLevels(rowNumber[0]++, jaroWinklerSimilarity, left, right));
+//                            }
+//});
                         patients.add(patient);
                     }
                 });

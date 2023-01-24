@@ -16,21 +16,6 @@
       "indexEntity": "@index(exact)"
     },
     {
-      "fieldName": "given_name",
-      "fieldType": "String",
-      "indexGoldenRecord": "@index(exact,trigram)",
-      "m": 0.782501,
-      "u": 0.023720
-    },
-    {
-      "fieldName": "family_name",
-      "fieldType": "String",
-      "indexGoldenRecord": "@index(exact,trigram)",
-      "indexEntity": "@index(exact,trigram)",
-      "m": 0.850909,
-      "u": 0.029750
-    },
-    {
       "fieldName": "gender",
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact)",
@@ -50,15 +35,6 @@
           "nat_fingerprint_code"
         ],
         "text": "eq(nat_fingerprint_code)"
-      }
-    },
-    "probabilistic": {
-      "QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_DISTANCE": {
-        "vars": [
-          "given_name",
-          "family_name"
-        ],
-        "text": "match(given_name,3) and match(family_name,3)"
       }
     }
   }

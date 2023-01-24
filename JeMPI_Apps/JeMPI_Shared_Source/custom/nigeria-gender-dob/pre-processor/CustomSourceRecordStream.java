@@ -101,41 +101,11 @@ public class CustomSourceRecordStream {
                var entity = new BatchEntity(
                      entityType,
                      rec.stan(),
-                     /*
-                     public record CustomEntity(String uid,
-                           SourceId sourceId,
-                           String auxId,
-                           String natFingerprintCode,
-                           String emrFingerprintCode,
-                           String givenName,
-                           String familyName,
-                           String gender,
-                           String dob,
-                           String city,
-                           String phoneNumber,
-                           String nationalId)
-                     */
-/*
-                     new CustomEntity(null,
-                                      new SourceId(null, rec.EMR(), rec.pID()),
-                                      rec.auxId(),
-                                      getNationalFingerprintID(rec.EMR(), rec.fID()),
-                                      rec.fID(),
-                                      rec.givenName(),
-                                      rec.familyName(),
-                                      rec.gender(),
-                                      rec.dob(),
-                                      rec.city(),
-                                      rec.phoneNumber(),
-                                      rec.nationalID()));
-*/
                new CustomEntity(null,
                                 new SourceId(null, rec.EMR(), rec.pID()),
                                 rec.auxId(),
                                 getNationalFingerprintID(rec.EMR(), rec.fID()),
                                 rec.fID(),
-                                rec.givenName(),
-                                rec.familyName(),
                                 rec.gender(),
                                 rec.dob()));
                return KeyValue.pair(k, entity);

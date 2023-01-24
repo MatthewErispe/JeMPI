@@ -24,15 +24,11 @@ public final class CustomMain {
    private static final String URL = String.format("http://%s:%d", AppConfig.API_SERVER_HOST,
                                                    AppConfig.API_SERVER_PORT);
    private static final String URL_LINK = String.format("%s/JeMPI/", URL);
-   private final OkHttpClient client = new OkHttpClient();
-
-   private final Map<String, List<GoldenRecordMembers>> dataSet = new HashMap<>();
-
    // 01234567890123456
    // rec-0000000001-00
    private static final int AUX_ID_SIGNIFICANT_CHARACTERS = 14;
-
-
+   private final OkHttpClient client = new OkHttpClient();
+   private final Map<String, List<GoldenRecordMembers>> dataSet = new HashMap<>();
    private final int[] truePositives = {0};
    private final int[] falsePositives = {0};
    private final int[] falseNegatives = {0};
@@ -113,19 +109,15 @@ public final class CustomMain {
    private void displayGoldenRecordDocuments(final PrintWriter writer, final MpiExpandedGoldenRecord goldenRecord) {
       final var rot = goldenRecord.customGoldenRecord();
       if (writer != null) {
-         writer.printf("GoldenRecord,%s,%s,%s,%s,%s,%s%n",
+         writer.printf("GoldenRecord,%s,%s,%s,%s%n",
                        rot.uid(), rot.auxId(),
-                       rot.givenName(), rot.familyName(), rot.gender(),
-                       rot.dob());
-//                       rot.phoneNumber());
+                       rot.gender(), rot.dob());
          goldenRecord.mpiEntityList().forEach(mpiEntity -> {
             final var entity = mpiEntity.entity();
             writer.format(Locale.ENGLISH,
-                          "document,%s,%s,%s,%s,%s,%s,%f%n",
+                          "document,%s,%s,%s,%s,%f%n",
                           entity.uid(), entity.auxId(),
-                          entity.givenName(), entity.familyName(), entity.gender(),
-                          entity.dob(),
-//                          entity.phoneNumber(),
+                          entity.gender(), entity.dob(),
                           mpiEntity.score());
          });
       }
@@ -197,8 +189,8 @@ public final class CustomMain {
 
       LOGGER.info("Golden Records Found: {}", dataSet.size());
       LOGGER.info("TP:{}  FP:{}  FN:{}  Precision:{}  Recall:{}  F-score:{}",
-              truePositives[0], falsePositives[0], falseNegatives[0],
-              precision, recall, fScore);
+                  truePositives[0], falsePositives[0], falseNegatives[0],
+                  precision, recall, fScore);
    }
 
    private record Count(Long count) {
