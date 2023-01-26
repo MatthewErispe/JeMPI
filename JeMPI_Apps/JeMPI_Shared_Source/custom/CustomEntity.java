@@ -10,19 +10,11 @@ public record CustomEntity(String uid,
                            String auxId,
                            String natFingerprintCode,
                            String emrFingerprintCode,
-                           String givenName,
-                           String familyName,
                            String gender,
                            String dob,
-                           String city,
-                           String phoneNumber,
-                           String nationalId) {
+                           String city) {
    public CustomEntity() {
       this(null,
-           null,
-           null,
-           null,
-           null,
            null,
            null,
            null,
@@ -32,8 +24,7 @@ public record CustomEntity(String uid,
            null);
    }
    public String getNames(final CustomEntity entity) {
-      return ((StringUtils.isBlank(entity.givenName) ? "" : " " + entity.givenName) + 
-              (StringUtils.isBlank(entity.familyName) ? "" : " " + entity.familyName)).trim();
+      return  "";
    }
 
 }

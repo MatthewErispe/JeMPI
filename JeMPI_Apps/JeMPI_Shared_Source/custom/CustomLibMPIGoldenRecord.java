@@ -13,13 +13,9 @@ record CustomLibMPIGoldenRecord (@JsonProperty("uid") String uid,
                                  @JsonProperty("GoldenRecord.aux_id") String auxId,
                                  @JsonProperty("GoldenRecord.nat_fingerprint_code") String natFingerprintCode,
                                  @JsonProperty("GoldenRecord.emr_fingerprint_code") String emrFingerprintCode,
-                                 @JsonProperty("GoldenRecord.given_name") String givenName,
-                                 @JsonProperty("GoldenRecord.family_name") String familyName,
                                  @JsonProperty("GoldenRecord.gender") String gender,
                                  @JsonProperty("GoldenRecord.dob") String dob,
-                                 @JsonProperty("GoldenRecord.city") String city,
-                                 @JsonProperty("GoldenRecord.phone_number") String phoneNumber,
-                                 @JsonProperty("GoldenRecord.national_id") String nationalId) {
+                                 @JsonProperty("GoldenRecord.city") String city) {
 
    CustomLibMPIGoldenRecord(final CustomLibMPIDGraphEntity dgraphEntity) {
       this(null,
@@ -27,13 +23,9 @@ record CustomLibMPIGoldenRecord (@JsonProperty("uid") String uid,
            dgraphEntity.auxId(),
            dgraphEntity.natFingerprintCode(),
            dgraphEntity.emrFingerprintCode(),
-           dgraphEntity.givenName(),
-           dgraphEntity.familyName(),
            dgraphEntity.gender(),
            dgraphEntity.dob(),
-           dgraphEntity.city(),
-           dgraphEntity.phoneNumber(),
-           dgraphEntity.nationalId());
+           dgraphEntity.city());
    }
 
    CustomGoldenRecord toCustomGoldenRecord() {
@@ -44,13 +36,9 @@ record CustomLibMPIGoldenRecord (@JsonProperty("uid") String uid,
                                     this.auxId(),
                                     this.natFingerprintCode(),
                                     this.emrFingerprintCode(),
-                                    this.givenName(),
-                                    this.familyName(),
                                     this.gender(),
                                     this.dob(),
-                                    this.city(),
-                                    this.phoneNumber(),
-                                    this.nationalId());
+                                    this.city());
    }
 
 }

@@ -10,19 +10,11 @@ public record CustomGoldenRecord(String uid,
                                  String auxId,
                                  String natFingerprintCode,
                                  String emrFingerprintCode,
-                                 String givenName,
-                                 String familyName,
                                  String gender,
                                  String dob,
-                                 String city,
-                                 String phoneNumber,
-                                 String nationalId) {
+                                 String city) {
    public CustomGoldenRecord() {
       this(null,
-           null,
-           null,
-           null,
-           null,
            null,
            null,
            null,
@@ -38,13 +30,9 @@ public record CustomGoldenRecord(String uid,
            entity.auxId(),
            entity.natFingerprintCode(),
            entity.emrFingerprintCode(),
-           entity.givenName(),
-           entity.familyName(),
            entity.gender(),
            entity.dob(),
-           entity.city(),
-           entity.phoneNumber(),
-           entity.nationalId());
+           entity.city());
    }
 
 }
