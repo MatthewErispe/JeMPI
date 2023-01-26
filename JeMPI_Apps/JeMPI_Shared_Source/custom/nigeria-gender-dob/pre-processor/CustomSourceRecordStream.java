@@ -87,9 +87,9 @@ public class CustomSourceRecordStream {
             GlobalConstants.TOPIC_PATIENT_ASYNC_PREPROCESSOR, Consumed.with(stringSerde, customSourceRecordSerde));
       patientKStream
             .map((key, rec) -> {
-               var k = rec.familyName();
+               var k = rec.dob();
                if (StringUtils.isBlank(k)) {
-                  k = "anon";
+                  k = "missing";
                }
                k = getEncodedMF(k, OperationType.OPERATION_TYPE_DOUBLE_METAPHONE);
                LOGGER.info("{} : {}", k, rec);

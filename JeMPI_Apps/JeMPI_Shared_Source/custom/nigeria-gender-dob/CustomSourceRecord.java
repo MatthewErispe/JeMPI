@@ -7,24 +7,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record CustomSourceRecord(RecordType recordType,
                                  String stan, // System Trace Audit Number
                                  String auxId,
-                                 String givenName,
-                                 String familyName,
                                  String gender,
                                  String dob,
-                                 String city,
-                                 String phoneNumber,
-                                 String nationalID,
                                  String EMR,
                                  String pID,
                                  String fID) {
 
    public CustomSourceRecord(RecordType recordType) {
       this(recordType,
-           null,
-           null,
-           null,
-           null,
-           null,
            null,
            null,
            null,
