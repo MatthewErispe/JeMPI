@@ -26,7 +26,7 @@ case class Rules(deterministic: Map[String, Rule],
                  probabilistic: Map[String, Rule])
 
 case class Config(fields: Array[Field],
-                  systemFields: Array[SystemField],
+                  systemFields: Option[Array[SystemField]],
                   rules: Rules)
 
 
