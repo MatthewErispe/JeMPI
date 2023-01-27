@@ -28,7 +28,7 @@ class CustomLibMPIQueries {
          var(func: eq(GoldenRecord.national_id, $national_id)) {
             D as uid
          }
-         all(func: uid(A,B,C,D)) @filter (uid(D) OR (uid(A) AND uid(B) AND uid(C))) {
+         all(func: uid(A,B,C,D)) @filter (uid(D) OR (uid(A) AND uid(B) AND uid(C))){
             uid
             GoldenRecord.source_id {
                uid
@@ -57,7 +57,7 @@ class CustomLibMPIQueries {
          var(func: match(GoldenRecord.city, $city, 3)) {
             C as uid
          }
-         all(func: uid(A,B,C)) @filter ((uid(A) AND uid(B)) OR (uid(A) AND uid(C)) OR (uid(B) AND uid(C))) {
+         all(func: uid(A,B,C)) @filter ((uid(A) AND uid(B)) OR (uid(A) AND uid(C)) OR (uid(B) AND uid(C))){
             uid
             GoldenRecord.source_id {
                uid
