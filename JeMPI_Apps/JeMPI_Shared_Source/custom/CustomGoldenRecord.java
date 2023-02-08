@@ -8,17 +8,13 @@ import java.util.List;
 public record CustomGoldenRecord(String uid,
                                  List<SourceId> sourceId,
                                  String auxId,
-                                 String givenName,
-                                 String familyName,
+                                 String natFingerprintCode,
+                                 String emrFingerprintCode,
                                  String gender,
                                  String dob,
-                                 String city,
-                                 String phoneNumber,
-                                 String nationalId) {
+                                 String city) {
    public CustomGoldenRecord() {
       this(null,
-           null,
-           null,
            null,
            null,
            null,
@@ -32,13 +28,11 @@ public record CustomGoldenRecord(String uid,
       this(null,
            List.of(entity.sourceId()),
            entity.auxId(),
-           entity.givenName(),
-           entity.familyName(),
+           entity.natFingerprintCode(),
+           entity.emrFingerprintCode(),
            entity.gender(),
            entity.dob(),
-           entity.city(),
-           entity.phoneNumber(),
-           entity.nationalId());
+           entity.city());
    }
 
 }

@@ -5,23 +5,19 @@ public final class CustomLibMPIConstants {
    private CustomLibMPIConstants() {}
 
    public static final String PREDICATE_GOLDEN_RECORD_AUX_ID = "GoldenRecord.aux_id";
-   public static final String PREDICATE_GOLDEN_RECORD_GIVEN_NAME = "GoldenRecord.given_name";
-   public static final String PREDICATE_GOLDEN_RECORD_FAMILY_NAME = "GoldenRecord.family_name";
+   public static final String PREDICATE_GOLDEN_RECORD_NAT_FINGERPRINT_CODE = "GoldenRecord.nat_fingerprint_code";
+   public static final String PREDICATE_GOLDEN_RECORD_EMR_FINGERPRINT_CODE = "GoldenRecord.emr_fingerprint_code";
    public static final String PREDICATE_GOLDEN_RECORD_GENDER = "GoldenRecord.gender";
    public static final String PREDICATE_GOLDEN_RECORD_DOB = "GoldenRecord.dob";
    public static final String PREDICATE_GOLDEN_RECORD_CITY = "GoldenRecord.city";
-   public static final String PREDICATE_GOLDEN_RECORD_PHONE_NUMBER = "GoldenRecord.phone_number";
-   public static final String PREDICATE_GOLDEN_RECORD_NATIONAL_ID = "GoldenRecord.national_id";
    public static final String PREDICATE_GOLDEN_RECORD_ENTITY_LIST = "GoldenRecord.entity_list";
 
    public static final String PREDICATE_ENTITY_AUX_ID = "Entity.aux_id";
-   public static final String PREDICATE_ENTITY_GIVEN_NAME = "Entity.given_name";
-   public static final String PREDICATE_ENTITY_FAMILY_NAME = "Entity.family_name";
+   public static final String PREDICATE_ENTITY_NAT_FINGERPRINT_CODE = "Entity.nat_fingerprint_code";
+   public static final String PREDICATE_ENTITY_EMR_FINGERPRINT_CODE = "Entity.emr_fingerprint_code";
    public static final String PREDICATE_ENTITY_GENDER = "Entity.gender";
    public static final String PREDICATE_ENTITY_DOB = "Entity.dob";
    public static final String PREDICATE_ENTITY_CITY = "Entity.city";
-   public static final String PREDICATE_ENTITY_PHONE_NUMBER = "Entity.phone_number";
-   public static final String PREDICATE_ENTITY_NATIONAL_ID = "Entity.national_id";
 
    static final String QUERY_GET_GOLDEN_RECORD_BY_UID =
       """
@@ -32,13 +28,11 @@ public final class CustomLibMPIConstants {
                uid
             }
             GoldenRecord.aux_id
-            GoldenRecord.given_name
-            GoldenRecord.family_name
+            GoldenRecord.nat_fingerprint_code
+            GoldenRecord.emr_fingerprint_code
             GoldenRecord.gender
             GoldenRecord.dob
             GoldenRecord.city
-            GoldenRecord.phone_number
-            GoldenRecord.national_id
          }
       }
       """;
@@ -52,13 +46,11 @@ public final class CustomLibMPIConstants {
                uid
             }
             GoldenRecord.aux_id
-            GoldenRecord.given_name
-            GoldenRecord.family_name
+            GoldenRecord.nat_fingerprint_code
+            GoldenRecord.emr_fingerprint_code
             GoldenRecord.gender
             GoldenRecord.dob
             GoldenRecord.city
-            GoldenRecord.phone_number
-            GoldenRecord.national_id
             GoldenRecord.entity_list @facets(score) {
                uid
                Entity.source_id {
@@ -67,13 +59,11 @@ public final class CustomLibMPIConstants {
                  SourceId.patient
                }
                Entity.aux_id
-               Entity.given_name
-               Entity.family_name
+               Entity.nat_fingerprint_code
+               Entity.emr_fingerprint_code
                Entity.gender
                Entity.dob
                Entity.city
-               Entity.phone_number
-               Entity.national_id
             }
          }
       }
@@ -90,13 +80,11 @@ public final class CustomLibMPIConstants {
               SourceId.patient
             }
             Entity.aux_id
-            Entity.given_name
-            Entity.family_name
+            Entity.nat_fingerprint_code
+            Entity.emr_fingerprint_code
             Entity.gender
             Entity.dob
             Entity.city
-            Entity.phone_number
-            Entity.national_id
          }
       }
       """;
@@ -116,13 +104,11 @@ public final class CustomLibMPIConstants {
       type GoldenRecord {
          GoldenRecord.source_id:                 [SourceId]
          GoldenRecord.aux_id
-         GoldenRecord.given_name
-         GoldenRecord.family_name
+         GoldenRecord.nat_fingerprint_code
+         GoldenRecord.emr_fingerprint_code
          GoldenRecord.gender
          GoldenRecord.dob
          GoldenRecord.city
-         GoldenRecord.phone_number
-         GoldenRecord.national_id
          GoldenRecord.entity_list:               [Entity]
          <~Entity.golden_record_list>
       }
@@ -134,13 +120,11 @@ public final class CustomLibMPIConstants {
       type Entity {
          Entity.source_id:                     SourceId
          Entity.aux_id
-         Entity.given_name
-         Entity.family_name
+         Entity.nat_fingerprint_code
+         Entity.emr_fingerprint_code
          Entity.gender
          Entity.dob
          Entity.city
-         Entity.phone_number
-         Entity.national_id
          Entity.golden_record_list:            [GoldenRecord]
       }
       """;
@@ -155,13 +139,11 @@ public final class CustomLibMPIConstants {
       """
       GoldenRecord.source_id:                [uid]                                        .
       GoldenRecord.aux_id:                   string    @index(exact)                      .
-      GoldenRecord.given_name:               string    @index(exact,trigram)              .
-      GoldenRecord.family_name:              string    @index(exact,trigram)              .
+      GoldenRecord.nat_fingerprint_code:     string    @index(exact)                      .
+      GoldenRecord.emr_fingerprint_code:     string                                       .
       GoldenRecord.gender:                   string    @index(exact)                      .
-      GoldenRecord.dob:                      string                                       .
-      GoldenRecord.city:                     string    @index(trigram)                    .
-      GoldenRecord.phone_number:             string    @index(exact,trigram)              .
-      GoldenRecord.national_id:              string    @index(exact,trigram)              .
+      GoldenRecord.dob:                      string    @index(exact)                      .
+      GoldenRecord.city:                     string    @index(exact)                      .
       GoldenRecord.entity_list:              [uid]     @reverse                           .
       """;
 
@@ -169,13 +151,11 @@ public final class CustomLibMPIConstants {
       """
       Entity.source_id:                    uid                                          .
       Entity.aux_id:                       string                                       .
-      Entity.given_name:                   string                                       .
-      Entity.family_name:                  string    @index(exact,trigram)              .
-      Entity.gender:                       string                                       .
-      Entity.dob:                          string                                       .
-      Entity.city:                         string                                       .
-      Entity.phone_number:                 string                                       .
-      Entity.national_id:                  string    @index(exact,trigram)              .
+      Entity.nat_fingerprint_code:         string                                       .
+      Entity.emr_fingerprint_code:         string    @index(exact)                      .
+      Entity.gender:                       string    @index(exact)                      .
+      Entity.dob:                          string    @index(exact)                      .
+      Entity.city:                         string    @index(exact)                      .
       Entity.golden_record_list:           [uid]     @reverse                           .
       """;
 

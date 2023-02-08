@@ -12,13 +12,11 @@ import org.jembi.jempi.libmpi.MpiExpandedGoldenRecord;
 record CustomLibMPIExpandedGoldenRecord(@JsonProperty("uid") String uid,
                                         @JsonProperty("GoldenRecord.source_id") List<LibMPISourceId> sourceId,
                                         @JsonProperty("GoldenRecord.aux_id") String auxId,
-                                        @JsonProperty("GoldenRecord.given_name") String givenName,
-                                        @JsonProperty("GoldenRecord.family_name") String familyName,
+                                        @JsonProperty("GoldenRecord.nat_fingerprint_code") String natFingerprintCode,
+                                        @JsonProperty("GoldenRecord.emr_fingerprint_code") String emrFingerprintCode,
                                         @JsonProperty("GoldenRecord.gender") String gender,
                                         @JsonProperty("GoldenRecord.dob") String dob,
                                         @JsonProperty("GoldenRecord.city") String city,
-                                        @JsonProperty("GoldenRecord.phone_number") String phoneNumber,
-                                        @JsonProperty("GoldenRecord.national_id") String nationalId,
                                         @JsonProperty("GoldenRecord.entity_list") List<CustomLibMPIDGraphEntity> dgraphEntityList) {
 
 
@@ -28,13 +26,11 @@ record CustomLibMPIExpandedGoldenRecord(@JsonProperty("uid") String uid,
                                        ? this.sourceId().stream().map(LibMPISourceId::toSourceId).toList()
                                        : List.of(),
                                     this.auxId(),
-                                    this.givenName(),
-                                    this.familyName(),
+                                    this.natFingerprintCode(),
+                                    this.emrFingerprintCode(),
                                     this.gender(),
                                     this.dob(),
-                                    this.city(),
-                                    this.phoneNumber(),
-                                    this.nationalId());
+                                    this.city());
    }
 
    MpiExpandedGoldenRecord toMpiExpandedGoldenRecord() {
