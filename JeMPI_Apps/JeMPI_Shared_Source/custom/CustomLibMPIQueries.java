@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.jembi.jempi.shared.models.CustomEntity;
 
-import static org.jembi.jempi.libmpi.dgraph.Queries.runGoldenRecordQuery;
+import static org.jembi.jempi.libmpi.dgraph.Queries.runGoldenRecordsQuery;
 
 class CustomLibMPIQueries {
 
@@ -37,7 +37,7 @@ class CustomLibMPIQueries {
          return new LibMPIGoldenRecordList(List.of());
       }
       final Map<String, String> map = Map.of("$nat_fingerprint_code", customEntity.natFingerprintCode());
-      return runGoldenRecordQuery(QUERY_DETERMINISTIC_GOLDEN_RECORD_CANDIDATES, map);
+      return runGoldenRecordsQuery(QUERY_DETERMINISTIC_GOLDEN_RECORD_CANDIDATES, map);
    }
 
    private static void updateCandidates(final List<CustomLibMPIGoldenRecord> goldenRecords,

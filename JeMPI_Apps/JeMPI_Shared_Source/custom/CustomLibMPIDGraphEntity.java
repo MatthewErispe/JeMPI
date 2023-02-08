@@ -27,7 +27,7 @@ record CustomLibMPIDGraphEntity(@JsonProperty("uid") String uid,
            score);
    }
 
-   private CustomEntity toCustomEntity() {
+   CustomEntity toCustomEntity() {
       return new CustomEntity(this.uid(),
                               this.sourceId() != null
                                  ? this.sourceId().toSourceId()
