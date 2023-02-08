@@ -15,9 +15,15 @@ class CustomLinkerDeterministic {
 
    static boolean deterministicMatch(final CustomGoldenRecord goldenRecord,
                                      final CustomEntity customEntity) {
-      final var natFingerprintCode_l = goldenRecord.natFingerprintCode();
-      final var natFingerprintCode_r = customEntity.natFingerprintCode();
-      return isMatch(natFingerprintCode_l, natFingerprintCode_r);
+      final var givenName_l = goldenRecord.givenName();
+      final var givenName_r = customEntity.givenName();
+      final var familyName_l = goldenRecord.familyName();
+      final var familyName_r = customEntity.familyName();
+      final var phoneNumber_l = goldenRecord.phoneNumber();
+      final var phoneNumber_r = customEntity.phoneNumber();
+      final var nationalId_l = goldenRecord.nationalId();
+      final var nationalId_r = customEntity.nationalId();
+      return (isMatch(nationalId_l, nationalId_r) || (isMatch(givenName_l, givenName_r) && isMatch(familyName_l, familyName_r) && isMatch(phoneNumber_l, phoneNumber_r)));
    }
 
 }

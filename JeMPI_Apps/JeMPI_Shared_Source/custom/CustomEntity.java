@@ -8,13 +8,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record CustomEntity(String uid,
                            SourceId sourceId,
                            String auxId,
-                           String natFingerprintCode,
-                           String emrFingerprintCode,
+                           String givenName,
+                           String familyName,
                            String gender,
                            String dob,
-                           String city) {
+                           String city,
+                           String phoneNumber,
+                           String nationalId) {
    public CustomEntity() {
       this(null,
+           null,
+           null,
            null,
            null,
            null,
@@ -24,7 +28,8 @@ public record CustomEntity(String uid,
            null);
    }
    public String getNames(final CustomEntity entity) {
-      return  "";
+      return ((StringUtils.isBlank(entity.givenName) ? "" : " " + entity.givenName) + 
+              (StringUtils.isBlank(entity.familyName) ? "" : " " + entity.familyName)).trim();
    }
 
 }
