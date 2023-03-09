@@ -89,13 +89,27 @@ public final class CustomLinkerMU {
       final Field nationalId = new Field();
 
       private float computeM(final Field field) {
-         return (float) (field.matchedPairFieldMatched)
-              / (float) (field.matchedPairFieldMatched + field.matchedPairFieldUnmatched);
+         float m;
+         try {
+            m = (float) (field.matchedPairFieldMatched)
+                    / (float) (field.matchedPairFieldMatched + field.matchedPairFieldUnmatched);
+         }
+         catch (ArithmeticException e) {
+            m = (float) (field.matchedPairFieldMatched) / 0.000001f;
+         }
+         return m;
       }
 
       private float computeU(final Field field) {
-         return (float) (field.unMatchedPairFieldMatched)
-              / (float) (field.unMatchedPairFieldMatched + field.unMatchedPairFieldUnmatched);
+         float u;
+         try {
+            u = (float) (field.unMatchedPairFieldMatched)
+                    / (float) (field.unMatchedPairFieldMatched + field.unMatchedPairFieldUnmatched);
+         }
+         catch (ArithmeticException e){
+            u = (float) (field.unMatchedPairFieldMatched) / 0.000001f;
+         }
+         return u;
       }
 
       @Override
