@@ -18,17 +18,24 @@ public final class CustomLinkerMU {
       LOGGER.debug("CustomLinkerMU");
    }
 
-   private static boolean fieldMismatch(
+   private static boolean compareJaroWinkler(
          final String left,
          final String right) {
       return JARO_WINKLER_SIMILARITY.apply(left, right) <= 0.92;
+   }
+
+   private static boolean compareJaroWinkler(
+           final String left,
+           final String right,
+           final Float similarity) {
+      return JARO_WINKLER_SIMILARITY.apply(left, right) <= similarity;
    }
 
    private void updateMatchedPair(
          final Field field,
          final String left,
          final String right) {
-      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || fieldMismatch(left, right)) {
+      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || compareJaroWinkler(left, right)) {
          field.matchedPairFieldUnmatched += 1;
       } else {
          field.matchedPairFieldMatched += 1;
@@ -39,7 +46,7 @@ public final class CustomLinkerMU {
          final Field field,
          final String left,
          final String right) {
-      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || fieldMismatch(left, right)) {
+      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || compareJaroWinkler(left, right)) {
          field.unMatchedPairFieldUnmatched += 1;
       } else {
          field.unMatchedPairFieldMatched += 1;
