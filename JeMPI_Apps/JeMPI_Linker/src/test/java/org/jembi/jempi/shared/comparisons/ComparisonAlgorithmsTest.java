@@ -7,16 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class ComparisonAlgorithmsTest {
 
     @Test
-    void compareJaroWinkler() {
-        assert true;
+    void testJaroWinklerScore(){
+        assert (ComparisonAlgorithms.JaroWinklerScore("muhammet", "muhammed")) == 0.95;
+        // online says differently - https://tilores.io/jaro-similarity-algorithm-online-tool?t1=muhammed&t2=muhammet
     }
-
     @Test
     void testCompareJaroWinkler() {
-    }
-
-    @Test
-    void compareLevenshtein() {
+        assert (ComparisonAlgorithms.compareJaroWinkler("muhammed", "muhammet"));
+        assert (ComparisonAlgorithms.compareJaroWinkler("bryan", "bruce", 0.55f));
+        assert (ComparisonAlgorithms.compareJaroWinkler("henry", "harry", 0.7f));
     }
 
     @Test
