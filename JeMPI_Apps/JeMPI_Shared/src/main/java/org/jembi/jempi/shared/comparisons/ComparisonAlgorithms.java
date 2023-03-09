@@ -6,6 +6,7 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
 public class ComparisonAlgorithms {
 
     private static final JaroWinklerSimilarity JARO_WINKLER_SIMILARITY = new JaroWinklerSimilarity();
+    private static final LevenshteinDistance LEVENSHTEIN_DISTANCE = new LevenshteinDistance();
 
     public static boolean compareJaroWinkler(
             final String left,
@@ -23,14 +24,14 @@ public class ComparisonAlgorithms {
     public static boolean compareLevenshtein(
             final String left,
             final String right){
-        return true;
+        return LEVENSHTEIN_DISTANCE.apply(left, right) <= 2;
     }
 
     public static boolean compareLevenshtein(
             final String left,
             final String right,
             final Integer distance){
-        return true;
+        return LEVENSHTEIN_DISTANCE.apply(left, right) <= distance;
     }
 
 }
