@@ -72,13 +72,16 @@ public final class CustomLinkerMU {
       LOGGER.debug("{}", fields);
    }
 
+   // TODO would be nice to change the name of Field to TallyCount
    static class Field {
-      long matchedPairFieldMatched = 0L;
-      long matchedPairFieldUnmatched = 0L;
-      long unMatchedPairFieldMatched = 0L;
-      long unMatchedPairFieldUnmatched = 0L;
+      // we are counting all the 4 segments of the square, not necessary but works
+      long matchedPairFieldMatched = 0L;        // record match AND field match
+      long matchedPairFieldUnmatched = 0L;      // record match AND field non-match
+      long unMatchedPairFieldMatched = 0L;      // record non-match AND field match
+      long unMatchedPairFieldUnmatched = 0L;    // record non-match AND field non-match
    }
 
+   // hard coded the attributes/fields that we are working with
    static class Fields {
       final Field givenName = new Field();
       final Field familyName = new Field();
@@ -89,27 +92,23 @@ public final class CustomLinkerMU {
       final Field nationalId = new Field();
 
       private float computeM(final Field field) {
-         float m;
          try {
-            m = (float) (field.matchedPairFieldMatched)
+            return (float) (field.matchedPairFieldMatched)
                     / (float) (field.matchedPairFieldMatched + field.matchedPairFieldUnmatched);
          }
          catch (ArithmeticException e) {
-            m = (float) (field.matchedPairFieldMatched) / 0.000001f;
+            return (float) (field.matchedPairFieldMatched) / 0.000001f;
          }
-         return m;
       }
 
       private float computeU(final Field field) {
-         float u;
          try {
-            u = (float) (field.unMatchedPairFieldMatched)
+            return (float) (field.unMatchedPairFieldMatched)
                     / (float) (field.unMatchedPairFieldMatched + field.unMatchedPairFieldUnmatched);
          }
          catch (ArithmeticException e){
-            u = (float) (field.unMatchedPairFieldMatched) / 0.000001f;
+            return (float) (field.unMatchedPairFieldMatched) / 0.000001f;
          }
-         return u;
       }
 
       @Override
@@ -123,7 +122,5 @@ public final class CustomLinkerMU {
                               computeM(phoneNumber), computeU(phoneNumber),
                               computeM(nationalId), computeU(nationalId));
       }
-
    }
-
 }
