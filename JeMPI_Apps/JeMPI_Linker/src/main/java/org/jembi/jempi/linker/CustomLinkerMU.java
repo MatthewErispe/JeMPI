@@ -1,52 +1,46 @@
 package org.jembi.jempi.linker;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jembi.jempi.shared.comparisons.ComparisonAlgorithms;
 import org.jembi.jempi.shared.models.CustomDemographicData;
+
+import java.util.Objects;
 
 
 public final class CustomLinkerMU {
 
    private static final Logger LOGGER = LogManager.getLogger(CustomLinkerMU.class);
-   private static final JaroWinklerSimilarity JARO_WINKLER_SIMILARITY = new JaroWinklerSimilarity();
-
    private final Fields fields = new Fields();
 
    CustomLinkerMU() {
       LOGGER.debug("CustomLinkerMU");
    }
 
-   private static boolean compareJaroWinkler(
-         final String left,
-         final String right) {
-      return JARO_WINKLER_SIMILARITY.apply(left, right) <= 0.92;
-   }
-
-   private static boolean compareJaroWinkler(
-           final String left,
-           final String right,
-           final Float similarity) {
-      return JARO_WINKLER_SIMILARITY.apply(left, right) <= similarity;
-   }
-
+   // TODO change from string algorithm to getting the name of the record
    private void updateMatchedPair(
-         final Field field,
-         final String left,
-         final String right) {
-      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || compareJaroWinkler(left, right)) {
-         field.matchedPairFieldUnmatched += 1;
-      } else {
-         field.matchedPairFieldMatched += 1;
-      }
+      final Field field,
+      final String left,
+      final String right,
+      final String algorithm) {
+      if (Objects.equals(algorithm, "jw")) {
+         if (StringUtils.isBlank(left) || StringUtils.isBlank(right) ||
+                 ComparisonAlgorithms.compareJaroWinkler(left, right)) {
+            field.matchedPairFieldUnmatched += 1;
+         } else {
+            field.matchedPairFieldMatched += 1;
+         }
+      } // TODO add the other options here
    }
 
    private void updateUnMatchedPair(
          final Field field,
          final String left,
-         final String right) {
-      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) || compareJaroWinkler(left, right)) {
+         final String right,
+         final String algorithm) {
+      if (StringUtils.isBlank(left) || StringUtils.isBlank(right) ||
+              ComparisonAlgorithms.compareJaroWinkler(left, right)) {
          field.unMatchedPairFieldUnmatched += 1;
       } else {
          field.unMatchedPairFieldMatched += 1;
@@ -56,26 +50,26 @@ public final class CustomLinkerMU {
    void updateMatchSums(
          final CustomDemographicData patient,
          final CustomDemographicData goldenRecord) {
-      updateMatchedPair(fields.givenName, patient.givenName(), goldenRecord.givenName());
-      updateMatchedPair(fields.familyName, patient.familyName(), goldenRecord.familyName());
-      updateMatchedPair(fields.gender, patient.gender(), goldenRecord.gender());
-      updateMatchedPair(fields.dob, patient.dob(), goldenRecord.dob());
-      updateMatchedPair(fields.city, patient.city(), goldenRecord.city());
-      updateMatchedPair(fields.phoneNumber, patient.phoneNumber(), goldenRecord.phoneNumber());
-      updateMatchedPair(fields.nationalId, patient.nationalId(), goldenRecord.nationalId());
+      updateMatchedPair(fields.givenName, patient.givenName(), goldenRecord.givenName(), "jw");
+      updateMatchedPair(fields.familyName, patient.familyName(), goldenRecord.familyName(), "jw");
+      updateMatchedPair(fields.gender, patient.gender(), goldenRecord.gender(), "exa");
+      updateMatchedPair(fields.dob, patient.dob(), goldenRecord.dob(), "exa");
+      updateMatchedPair(fields.city, patient.city(), goldenRecord.city(), "jw");
+      updateMatchedPair(fields.phoneNumber, patient.phoneNumber(), goldenRecord.phoneNumber(), "lev");
+      updateMatchedPair(fields.nationalId, patient.nationalId(), goldenRecord.nationalId(), "lev");
       LOGGER.debug("{}", fields);
    }
 
-   void updateMissmatchSums(
+   void updateNonMatchSums(
          final CustomDemographicData patient,
          final CustomDemographicData goldenRecord) {
-      updateUnMatchedPair(fields.givenName, patient.givenName(), goldenRecord.givenName());
-      updateUnMatchedPair(fields.familyName, patient.familyName(), goldenRecord.familyName());
-      updateUnMatchedPair(fields.gender, patient.gender(), goldenRecord.gender());
-      updateUnMatchedPair(fields.dob, patient.dob(), goldenRecord.dob());
-      updateUnMatchedPair(fields.city, patient.city(), goldenRecord.city());
-      updateUnMatchedPair(fields.phoneNumber, patient.phoneNumber(), goldenRecord.phoneNumber());
-      updateUnMatchedPair(fields.nationalId, patient.nationalId(), goldenRecord.nationalId());
+      updateUnMatchedPair(fields.givenName, patient.givenName(), goldenRecord.givenName(), "jw");
+      updateUnMatchedPair(fields.familyName, patient.familyName(), goldenRecord.familyName(), "jw");
+      updateUnMatchedPair(fields.gender, patient.gender(), goldenRecord.gender(), "exa");
+      updateUnMatchedPair(fields.dob, patient.dob(), goldenRecord.dob(), "exa");
+      updateUnMatchedPair(fields.city, patient.city(), goldenRecord.city(), "jw");
+      updateUnMatchedPair(fields.phoneNumber, patient.phoneNumber(), goldenRecord.phoneNumber(), "lev");
+      updateUnMatchedPair(fields.nationalId, patient.nationalId(), goldenRecord.nationalId(), "lev");
       LOGGER.debug("{}", fields);
    }
 
