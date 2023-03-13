@@ -21,6 +21,13 @@
 
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/edu.gatech.gtri.string-metric/string-metric -->
+        <dependency>
+            <groupId>edu.gatech.gtri.string-metric</groupId>
+            <artifactId>string-metric</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

@@ -1,5 +1,6 @@
 package org.jembi.jempi.shared.comparisons;
 
+import edu.gatech.gtri.stringmetric.DamerauLevenshteinDistance;
 import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
@@ -7,6 +8,8 @@ public class ComparisonAlgorithms {
 
     private static final JaroWinklerSimilarity JARO_WINKLER_SIMILARITY = new JaroWinklerSimilarity();
     private static final LevenshteinDistance LEVENSHTEIN_DISTANCE = new LevenshteinDistance();
+
+    private static final DamerauLevenshteinDistance DAMERAU_LEVENSHTEIN_DISTANCE = new DamerauLevenshteinDistance();
 
     public static double JaroWinklerScore(
             final String left,
@@ -28,6 +31,13 @@ public class ComparisonAlgorithms {
         return JARO_WINKLER_SIMILARITY.apply(left, right) >= similarity;
     }
 
+    public static Integer LevenshteinScore(
+            final String left,
+            final String right){
+        return LEVENSHTEIN_DISTANCE.apply(left, right);
+    }
+
+
     public static boolean compareLevenshtein(
             final String left,
             final String right){
@@ -39,6 +49,18 @@ public class ComparisonAlgorithms {
             final String right,
             final Integer distance){
         return LEVENSHTEIN_DISTANCE.apply(left, right) <= distance;
+    }
+
+    public static boolean compareDamerauLevenshtein(
+        final String left,
+        final String right){
+            return DAMERAU_LEVENSHTEIN_DISTANCE.distance(left, right) <= 3;
+    }
+
+    public static Integer DamerauLevenshteinScore(
+            final String left,
+            final String right) {
+        return DAMERAU_LEVENSHTEIN_DISTANCE.distance(left, right);
     }
 
 }
