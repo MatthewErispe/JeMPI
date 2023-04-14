@@ -45,6 +45,8 @@ private object CustomMU {
     writer.println(s"   public $customClassName(final double[] mHat, final double[] uHat) {")
     if (filteredFields.length == 0)
       writer.println(s"      this(new $customClassName.Probability(0.0F, 0.0F));")
+    else if (filteredFields.length == 1)
+      writer.println(s"      this(new $customClassName.Probability((float) mHat[0], (float) uHat[0]));")
     else
       filteredFields.zipWithIndex.foreach {
         case (_, idx) =>
