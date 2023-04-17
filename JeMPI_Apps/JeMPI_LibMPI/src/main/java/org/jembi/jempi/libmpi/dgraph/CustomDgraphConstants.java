@@ -3,7 +3,8 @@ package org.jembi.jempi.libmpi.dgraph;
 public final class CustomDgraphConstants {
 
    public static final String PREDICATE_GOLDEN_RECORD_AUX_ID = "GoldenRecord.aux_id";
-   public static final String PREDICATE_GOLDEN_RECORD_AUX_DWH_ID = "GoldenRecord.aux_dwh_id";
+   public static final String PREDICATE_GOLDEN_RECORD_AUX_DWH_ID_1 = "GoldenRecord.aux_dwh_id_1";
+   public static final String PREDICATE_GOLDEN_RECORD_AUX_DWH_ID_2 = "GoldenRecord.aux_dwh_id_2";
    public static final String PREDICATE_GOLDEN_RECORD_PHONETIC_GIVEN_NAME = "GoldenRecord.phonetic_given_name";
    public static final String PREDICATE_GOLDEN_RECORD_PHONETIC_FAMILY_NAME = "GoldenRecord.phonetic_family_name";
    public static final String PREDICATE_GOLDEN_RECORD_GENDER = "GoldenRecord.gender";
@@ -11,7 +12,8 @@ public final class CustomDgraphConstants {
    public static final String PREDICATE_GOLDEN_RECORD_NUPI = "GoldenRecord.nupi";
    public static final String PREDICATE_GOLDEN_RECORD_PATIENTS = "GoldenRecord.patients";
    public static final String PREDICATE_PATIENT_RECORDAUX_ID = "PatientRecord.aux_id";
-   public static final String PREDICATE_PATIENT_RECORDAUX_DWH_ID = "PatientRecord.aux_dwh_id";
+   public static final String PREDICATE_PATIENT_RECORDAUX_DWH_ID_1 = "PatientRecord.aux_dwh_id_1";
+   public static final String PREDICATE_PATIENT_RECORDAUX_DWH_ID_2 = "PatientRecord.aux_dwh_id_2";
    public static final String PREDICATE_PATIENT_RECORDPHONETIC_GIVEN_NAME = "PatientRecord.phonetic_given_name";
    public static final String PREDICATE_PATIENT_RECORDPHONETIC_FAMILY_NAME = "PatientRecord.phonetic_family_name";
    public static final String PREDICATE_PATIENT_RECORDGENDER = "PatientRecord.gender";
@@ -27,7 +29,8 @@ public final class CustomDgraphConstants {
             SourceId.patient
          }
          GoldenRecord.aux_id
-         GoldenRecord.aux_dwh_id
+         GoldenRecord.aux_dwh_id1
+         GoldenRecord.aux_dwh_id2
          GoldenRecord.phonetic_given_name
          GoldenRecord.phonetic_family_name
          GoldenRecord.gender
@@ -44,7 +47,8 @@ public final class CustomDgraphConstants {
             SourceId.patient
          }
          GoldenRecord.aux_id
-         GoldenRecord.aux_dwh_id
+         GoldenRecord.aux_dwh_id1
+         GoldenRecord.aux_dwh_id2
          GoldenRecord.phonetic_given_name
          GoldenRecord.phonetic_family_name
          GoldenRecord.gender
@@ -58,7 +62,8 @@ public final class CustomDgraphConstants {
                SourceId.patient
             }
             PatientRecord.aux_id
-            PatientRecord.aux_dwh_id
+            PatientRecord.aux_dwh_id1
+            PatientRecord.aux_dwh_id2
             PatientRecord.phonetic_given_name
             PatientRecord.phonetic_family_name
             PatientRecord.gender
@@ -75,7 +80,8 @@ public final class CustomDgraphConstants {
             SourceId.patient
          }
          PatientRecord.aux_id
-         PatientRecord.aux_dwh_id
+         PatientRecord.aux_dwh_id1
+         PatientRecord.aux_dwh_id2
          PatientRecord.phonetic_given_name
          PatientRecord.phonetic_family_name
          PatientRecord.gender
@@ -91,7 +97,8 @@ public final class CustomDgraphConstants {
             SourceId.patient
          }
          PatientRecord.aux_id
-         PatientRecord.aux_dwh_id
+         PatientRecord.aux_dwh_id1
+         PatientRecord.aux_dwh_id2
          PatientRecord.phonetic_given_name
          PatientRecord.phonetic_family_name
          PatientRecord.gender
@@ -105,7 +112,8 @@ public final class CustomDgraphConstants {
               SourceId.patient
             }
             GoldenRecord.aux_id
-            GoldenRecord.aux_dwh_id
+            GoldenRecord.aux_dwh_id1
+            GoldenRecord.aux_dwh_id2
             GoldenRecord.phonetic_given_name
             GoldenRecord.phonetic_family_name
             GoldenRecord.gender
@@ -125,7 +133,8 @@ public final class CustomDgraphConstants {
                  SourceId.patient
                }
                PatientRecord.aux_id
-               PatientRecord.aux_dwh_id
+               PatientRecord.aux_dwh_id1
+               PatientRecord.aux_dwh_id2
                PatientRecord.phonetic_given_name
                PatientRecord.phonetic_family_name
                PatientRecord.gender
@@ -146,7 +155,8 @@ public final class CustomDgraphConstants {
                   SourceId.patient
                }
                GoldenRecord.aux_id
-               GoldenRecord.aux_dwh_id
+               GoldenRecord.aux_dwh_id1
+               GoldenRecord.aux_dwh_id2
                GoldenRecord.phonetic_given_name
                GoldenRecord.phonetic_family_name
                GoldenRecord.gender
@@ -167,7 +177,8 @@ public final class CustomDgraphConstants {
                   SourceId.patient
                }
                PatientRecord.aux_id
-               PatientRecord.aux_dwh_id
+               PatientRecord.aux_dwh_id1
+               PatientRecord.aux_dwh_id2
                PatientRecord.phonetic_given_name
                PatientRecord.phonetic_family_name
                PatientRecord.gender
@@ -181,7 +192,8 @@ public final class CustomDgraphConstants {
                     SourceId.patient
                   }
                   GoldenRecord.aux_id
-                  GoldenRecord.aux_dwh_id
+                  GoldenRecord.aux_dwh_id1
+                  GoldenRecord.aux_dwh_id2
                   GoldenRecord.phonetic_given_name
                   GoldenRecord.phonetic_family_name
                   GoldenRecord.gender
@@ -203,7 +215,8 @@ public final class CustomDgraphConstants {
                   SourceId.patient
                }
                GoldenRecord.aux_id
-               GoldenRecord.aux_dwh_id
+               GoldenRecord.aux_dwh_id1
+               GoldenRecord.aux_dwh_id2
                GoldenRecord.phonetic_given_name
                GoldenRecord.phonetic_family_name
                GoldenRecord.gender
@@ -224,7 +237,8 @@ public final class CustomDgraphConstants {
                   SourceId.patient
                }
                GoldenRecord.aux_id
-               GoldenRecord.aux_dwh_id
+               GoldenRecord.aux_dwh_id1
+               GoldenRecord.aux_dwh_id2
                GoldenRecord.phonetic_given_name
                GoldenRecord.phonetic_family_name
                GoldenRecord.gender
@@ -238,7 +252,8 @@ public final class CustomDgraphConstants {
                     SourceId.patient
                   }
                   PatientRecord.aux_id
-                  PatientRecord.aux_dwh_id
+                  PatientRecord.aux_dwh_id1
+                  PatientRecord.aux_dwh_id2
                   PatientRecord.phonetic_given_name
                   PatientRecord.phonetic_family_name
                   PatientRecord.gender
@@ -269,7 +284,8 @@ public final class CustomDgraphConstants {
          type GoldenRecord {
             GoldenRecord.source_id:                 [SourceId]
             GoldenRecord.aux_id
-            GoldenRecord.aux_dwh_id
+            GoldenRecord.aux_dwh_id1
+            GoldenRecord.aux_dwh_id2
             GoldenRecord.phonetic_given_name
             GoldenRecord.phonetic_family_name
             GoldenRecord.gender
@@ -283,7 +299,8 @@ public final class CustomDgraphConstants {
          """
          GoldenRecord.source_id:                [uid]                                        .
          GoldenRecord.aux_id:                   string    @index(exact,trigram)              .
-         GoldenRecord.aux_dwh_id:               string    @index(exact,trigram)              .
+         GoldenRecord.aux_dwh_id1:              string                                       .
+         GoldenRecord.aux_dwh_id2:              string                                       .
          GoldenRecord.phonetic_given_name:      string    @index(exact,trigram)              .
          GoldenRecord.phonetic_family_name:     string    @index(exact,trigram)              .
          GoldenRecord.gender:                   string    @index(exact,trigram)              .
@@ -298,7 +315,8 @@ public final class CustomDgraphConstants {
          type PatientRecord {
             PatientRecord.source_id:                     SourceId
             PatientRecord.aux_id
-            PatientRecord.aux_dwh_id
+            PatientRecord.aux_dwh_id1
+            PatientRecord.aux_dwh_id2
             PatientRecord.phonetic_given_name
             PatientRecord.phonetic_family_name
             PatientRecord.gender
@@ -311,7 +329,8 @@ public final class CustomDgraphConstants {
          """
          PatientRecord.source_id:                    uid                                          .
          PatientRecord.aux_id:                       string                                       .
-         PatientRecord.aux_dwh_id:                   string                                       .
+         PatientRecord.aux_dwh_id1:                  string    @index(exact)                      .
+         PatientRecord.aux_dwh_id2:                  string    @index(exact)                      .
          PatientRecord.phonetic_given_name:          string    @index(exact,trigram)              .
          PatientRecord.phonetic_family_name:         string    @index(exact,trigram)              .
          PatientRecord.gender:                       string                                       .

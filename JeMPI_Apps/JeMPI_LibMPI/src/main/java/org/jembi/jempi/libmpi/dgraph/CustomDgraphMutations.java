@@ -17,7 +17,8 @@ final class CustomDgraphMutations {
       return String.format("""
                            _:%s  <PatientRecord.source_id>                <%s>        .
                            _:%s  <PatientRecord.aux_id>                   %s          .
-                           _:%s  <PatientRecord.aux_dwh_id>               %s          .
+                           _:%s  <PatientRecord.aux_dwh_id1>              %s          .
+                           _:%s  <PatientRecord.aux_dwh_id2>              %s          .
                            _:%s  <PatientRecord.phonetic_given_name>      %s          .
                            _:%s  <PatientRecord.phonetic_family_name>     %s          .
                            _:%s  <PatientRecord.gender>                   %s          .
@@ -27,7 +28,8 @@ final class CustomDgraphMutations {
                            """,
                            uuid, sourceUID,
                            uuid, AppUtils.quotedValue(demographicData.auxId()),
-                           uuid, AppUtils.quotedValue(demographicData.auxDwhId()),
+                           uuid, AppUtils.quotedValue(demographicData.auxDwhId1()),
+                           uuid, AppUtils.quotedValue(demographicData.auxDwhId2()),
                            uuid, AppUtils.quotedValue(demographicData.phoneticGivenName()),
                            uuid, AppUtils.quotedValue(demographicData.phoneticFamilyName()),
                            uuid, AppUtils.quotedValue(demographicData.gender()),
@@ -45,7 +47,8 @@ final class CustomDgraphMutations {
       return String.format("""
                            _:%s  <GoldenRecord.source_id>                     <%s>             .
                            _:%s  <GoldenRecord.aux_id>                        %s               .
-                           _:%s  <GoldenRecord.aux_dwh_id>                    %s               .
+                           _:%s  <GoldenRecord.aux_dwh_id1>                   %s               .
+                           _:%s  <GoldenRecord.aux_dwh_id2>                   %s               .
                            _:%s  <GoldenRecord.phonetic_given_name>           %s               .
                            _:%s  <GoldenRecord.phonetic_family_name>          %s               .
                            _:%s  <GoldenRecord.gender>                        %s               .
@@ -56,7 +59,8 @@ final class CustomDgraphMutations {
                            """,
                            uuid, sourceUID,
                            uuid, AppUtils.quotedValue(demographicData.auxId()),
-                           uuid, AppUtils.quotedValue(demographicData.auxDwhId()),
+                           uuid, AppUtils.quotedValue(demographicData.auxDwhId1()),
+                           uuid, AppUtils.quotedValue(demographicData.auxDwhId2()),
                            uuid, AppUtils.quotedValue(demographicData.phoneticGivenName()),
                            uuid, AppUtils.quotedValue(demographicData.phoneticFamilyName()),
                            uuid, AppUtils.quotedValue(demographicData.gender()),

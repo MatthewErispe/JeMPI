@@ -14,11 +14,13 @@
       "accessLevel": []
     },
     {
-      "fieldName": "aux_dwh_id",
+      "fieldName": "aux_dwh_id1",
       "fieldType": "String",
-      "indexGoldenRecord": "@index(exact,trigram)",
-      "fieldLabel": "AUX DWH ID",
-      "groups": ["identifiers"],
+      "indexEntity": "@index(exact)",
+      "fieldLabel": "AUX DWH ID1",
+      "groups": [
+        "identifiers"
+      ],
       "scope": [
         "/patient-record/:uid",
         "/golden-record/:uid",
@@ -26,14 +28,26 @@
       ],
       "accessLevel": []
     },
-
+    {
+      "fieldName": "aux_dwh_id2",
+      "fieldType": "String",
+      "indexEntity": "@index(exact)",
+      "fieldLabel": "AUX DWH ID2",
+      "groups": [
+        "identifiers"
+      ],
+      "scope": [
+        "/patient-record/:uid",
+        "/golden-record/:uid",
+        "/search/custom"
+      ],
+      "accessLevel": []
+    },
     {
       "fieldName": "phonetic_given_name",
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact,trigram)",
       "indexEntity": "@index(exact,trigram)",
-      "m": 0.782501,
-      "u": 0.02372,
       "fieldLabel": "Phonetic First Name",
       "groups": ["name", "demographics", "linked_records"],
       "scope": [
@@ -54,8 +68,6 @@
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact,trigram)",
       "indexEntity": "@index(exact,trigram)",
-      "m": 0.850909,
-      "u": 0.02975,
       "fieldLabel": "Phonetic Last Name",
       "groups": ["name", "demographics", "linked_records"],
       "scope": [
@@ -75,8 +87,6 @@
       "fieldName": "gender",
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact,trigram)",
-      "m": 0.786614,
-      "u": 0.443018,
       "fieldLabel": "Gender",
       "groups": ["demographics", "sub_heading", "linked_records"],
       "scope": [
@@ -92,8 +102,6 @@
       "fieldName": "dob",
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact,trigram)",
-      "m": 0.894637,
-      "u": 0.012448,
       "fieldLabel": "Date of Birth",
       "groups": ["demographics", "sub_heading", "linked_records"],
       "scope": [
@@ -113,9 +121,7 @@
       "fieldType": "String",
       "indexGoldenRecord": "@index(exact,trigram)",
       "indexEntity": "@index(exact,trigram)",
-      "m": 0.832336,
-      "u": 0.000133,
-      "fieldLabel": "National Uniqie Patient Identifier",
+      "fieldLabel": "National Unique Patient Identifier",
       "groups": ["identifiers", "linked_records"],
       "scope": [
         "/patient-record/:uid",
@@ -183,16 +189,7 @@
         "vars": ["phonetic_given_name", "phonetic_family_name", "gender", "dob", "nupi"],
         "text": "eq(nupi) or (eq(phonetic_given_name) and eq(phonetic_family_name) and eq(gender) and eq(dob))"
       }
-    },
-    "probabilistic": {
-      "QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_DISTANCE": {
-        "vars": ["phonetic_given_name", "phonetic_family_name", "dob"],
-        "text": "match(phonetic_given_name,3) and match(phonetic_family_name,3) or match(phonetic_given_name,3) and match(dob,3) or match(phonetic_family_name,3) and match(dob,3)"
-      },
-      "QUERY_MATCH_GOLDEN_RECORD_CANDIDATES_BY_NATIONAL_ID": {
-        "vars": ["nupi"],
-        "text": "match(nupi,3)"
-      }
     }
   }
+
 }

@@ -80,12 +80,14 @@ VALUES ('THRESHOLD'), ('MARGIN'), ('UPDATE');
 
 CREATE TABLE IF NOT EXISTS dwh
 (
-     dwh_id        UUID DEFAULT gen_random_uuid() PRIMARY KEY UNIQUE,
+     dwh_id1       UUID DEFAULT gen_random_uuid() PRIMARY KEY UNIQUE,
+     dwh_id2       UUID DEFAULT gen_random_uuid(),
      golden_id     VARCHAR(32),
      encounter_id  VARCHAR(32),
      clinical_data VARCHAR(256)
 );
 
+CREATE INDEX IF NOT EXISTS idx_dwh_id2 ON dwh(dwh_id2);
 CREATE INDEX IF NOT EXISTS idx_dwh_gid ON dwh(golden_id);
 CREATE INDEX IF NOT EXISTS idx_dwh_eid ON dwh(encounter_id);
 

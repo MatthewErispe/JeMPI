@@ -70,7 +70,8 @@ public final class CustomSourceRecordStream {
                                                                                       rec.customSourceRecord().sourceId(),
                                                                                       new CustomDemographicData(
                                                                                             rec.customSourceRecord().auxId(),
-                                                                                            rec.customSourceRecord().auxDwhId(),
+                                                                                            rec.customSourceRecord().auxDwhId1(),
+                                                                                            rec.customSourceRecord().auxDwhId2(),
                                                                                             rec.customSourceRecord().phoneticGivenName(),
                                                                                             rec.customSourceRecord().phoneticFamilyName(),
                                                                                             rec.customSourceRecord().gender(),

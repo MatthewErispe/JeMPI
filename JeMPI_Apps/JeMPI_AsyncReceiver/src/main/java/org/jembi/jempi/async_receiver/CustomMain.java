@@ -131,7 +131,7 @@ public final class CustomMain {
                                            null));
          for (CSVRecord csvRecord : csvParser) {
             final var clinicalData = csvRecord.get(6);
-            final var dwhId = dwh.insertClinicalData(String.format("%s - %s", csvRecord.get(0), clinicalData));
+            final var tuple2 = dwh.insertClinicalData(String.format("%s - %s", csvRecord.get(0), clinicalData));
             sendToKafka(csvRecord.get(2) == null
                               ? uuid
                               : (tuple3 == null
@@ -143,7 +143,8 @@ public final class CustomMain {
                                                     String.format("%s:%07d", stanDate, ++index),
                                                     parseSourceId(csvRecord.get(6)),
                                                     csvRecord.get(0),
-                                                    dwhId,
+                                                    tuple2._1(),
+                                                    tuple2._2(),
                                                     tuple3 == null
                                                           ? csvRecord.get(1)
                                                           : getEncodedMF(csvRecord.get(1), tuple3._1()),

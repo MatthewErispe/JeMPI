@@ -415,7 +415,8 @@ public final class BackEnd extends AbstractBehavior<BackEnd.Event> {
                    ? AppConfig.BACK_END_MATCH_THRESHOLD
                    : req.batchPatientRecord.batchMetaData().threshold()));
 
-      final var backPatchDWL = new BackPatchDWH(req.batchPatientRecord.patientRecord().demographicData().auxDwhId(),
+      final var backPatchDWL = new BackPatchDWH(req.batchPatientRecord.patientRecord().demographicData().auxDwhId1(),
+                                                req.batchPatientRecord.patientRecord().demographicData().auxDwhId2(),
                                                 listLinkInfo.getLeft().goldenUID(),
                                                 listLinkInfo.getLeft().patientUID());
       try {

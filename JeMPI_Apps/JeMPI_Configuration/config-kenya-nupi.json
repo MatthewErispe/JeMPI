@@ -16,10 +16,25 @@
       "accessLevel": []
     },
     {
-      "fieldName": "aux_dwh_id",
+      "fieldName": "aux_dwh_id1",
       "fieldType": "String",
-      "indexGoldenRecord": "@index(exact,trigram)",
-      "fieldLabel": "AUX DWH ID",
+      "indexEntity": "@index(exact)",
+      "fieldLabel": "AUX DWH ID1",
+      "groups": [
+        "identifiers"
+      ],
+      "scope": [
+        "/patient-record/:uid",
+        "/golden-record/:uid",
+        "/search/custom"
+      ],
+      "accessLevel": []
+    },
+    {
+      "fieldName": "aux_dwh_id2",
+      "fieldType": "String",
+      "indexEntity": "@index(exact)",
+      "fieldLabel": "AUX DWH ID2",
       "groups": [
         "identifiers"
       ],
@@ -206,8 +221,8 @@
   "rules": {
     "deterministic": {
       "QUERY_DETERMINISTIC_GOLDEN_RECORD_CANDIDATES": {
-        "vars": ["phonetic_given_name", "phonetic_family_name", "gender", "dob", "nupi"],
-        "text": "eq(nupi) or (eq(phonetic_given_name) and eq(phonetic_family_name) and eq(gender) and eq(dob))"
+        "vars": ["nupi"],
+        "text": "eq(nupi)"
       }
     }
   }
