@@ -40,6 +40,10 @@ services:
         target: 50000
         protocol: tcp
         mode: host
+      - published: 80
+        target: 80
+        protocol: tcp
+        mode: host
     deploy:
       mode: global
 
