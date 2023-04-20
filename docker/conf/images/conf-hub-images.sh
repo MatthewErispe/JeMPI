@@ -17,3 +17,7 @@ export POSTGRESQL_IMAGE=bitnami/postgresql:15.2.0
 
 # https://hub.docker.com/r/haproxytech/haproxy-debian
 export HAPROXY_IMAGE=haproxytech/haproxy-debian:2.8
+
+# https://hub.docker.com/_/nginx
+export NGINX_IMAGE=library/nginx:latest
+#export NGINX_IMAGE=bitnami/nginx:latest
