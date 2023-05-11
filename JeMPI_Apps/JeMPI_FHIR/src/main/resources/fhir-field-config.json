@@ -1,0 +1,38 @@
+{
+  "fields": [
+    {
+      "fieldName": "aux_id",
+      "fhirPath": "extension.where(url = 'http://example.com/fhir/extensions#aux_id').value"
+    },
+    {
+      "fieldName": "given_name",
+      "fhirPath": "name.given"
+    },
+    {
+      "fieldName": "family_name",
+      "fhirPath": "name.family"
+    },
+    {
+      "fieldName": "gender",
+      "fhirPath": "gender"
+    },
+    {
+      "fieldName": "dob",
+      "fhirPath": "birthDate"
+    },
+    {
+      "fieldName": "city",
+      "fhirPath": "address.city"
+
+    },
+    {
+      "fieldName": "phone_number",
+      "fhirPath": "telecom.where(system = 'phone').value"
+
+    },
+    {
+      "fieldName": "national_id",
+      "fhirPath": "identifier.where(system='http://hl7.org/fhir/sid/us-ssn').value"
+    }
+  ]
+}
