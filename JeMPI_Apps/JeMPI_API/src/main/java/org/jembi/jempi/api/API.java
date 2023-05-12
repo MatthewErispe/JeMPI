@@ -34,9 +34,9 @@ public final class API {
       return Behaviors.setup(context -> {
          ActorRef<BackEnd.Event> backEnd = context.spawn(BackEnd.create(), "BackEnd");
          context.watch(backEnd);
-         final var notificationsSteam = new NotificationStreamProcessor();
-         ActorSystem<Void> system = context.getSystem();
-         notificationsSteam.open(system, backEnd);
+//         final var notificationsSteam = new NotificationStreamProcessor();
+//         ActorSystem<Void> system = context.getSystem();
+//         notificationsSteam.open(system, backEnd);
          httpServer = HttpServer.create();
          httpServer.open(context.getSystem(), backEnd, jsonFieldsConfig.fields);
          return Behaviors.receive(Void.class).onSignal(Terminated.class, sig -> {
