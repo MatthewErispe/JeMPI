@@ -117,15 +117,16 @@ const NotificationWorklist = () => {
     ...locale,
   });
   const [date, setDate] = React.useState(selectedDate)
+  const [state, setState] = React.useState<string>('');
   const { data, error, isLoading, isFetching } = useQuery<
     Notification[],
     AxiosError
   >({
-    queryKey: ['notifications', date.format('YYYY-MM-DD')],
-    queryFn: () => ApiClient.getMatches('500', '0', date.format('YYYY-MM-DD'), 'New'),
+    queryKey: ['notifications', date.format('YYYY-MM-DD'), state],
+    queryFn: () => ApiClient.getMatches('500', '0', date.format('YYYY-MM-DD'), state),
     refetchOnWindowFocus: false
   })
-  console.log('********************************* : {}',date)
+
   if (isLoading || isFetching) {
     return <Loading />
   }
@@ -143,7 +144,10 @@ const NotificationWorklist = () => {
       setDate(date)
     }
   }
-  console.log('******************************  {}',date)
+    const changeSelectedState = (newState: string) => {
+      setState(newState);
+    };
+
   return (
     <Container maxWidth={false}>
       <PageHeader
@@ -161,7 +165,12 @@ const NotificationWorklist = () => {
       <DataGrid
         columns={columns}
         components={{
-          Toolbar: () => <DataGridToolbar onChange={changeSelectedDate} value={date}/>
+          Toolbar: () => <DataGridToolbar
+          onChangeDate={changeSelectedDate}
+           valueDate={date}
+            onChangeState={changeSelectedState}
+            valueState={state}
+          />
         }}
         rows={data as Notification[]}
         pageSize={10}
